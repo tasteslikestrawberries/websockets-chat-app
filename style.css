@@ -1,0 +1,47 @@
+h1 {
+
+    font-size:40px;
+    font-family: 'Mulish', sans-serif;
+    color:dodgerblue;
+    text-align:center;
+}
+
+#messages {
+
+    height: 400px; 
+    overflow: scroll;
+    font-family: 'Mulish', sans-serif;
+    color: dodgerblue; 
+    font-size:20px;
+    font-weight:bold;
+}
+
+#messageBox {
+
+    display: block;
+    background-color: ghostwhite;
+    font-family: 'Mulish', sans-serif;
+    color: dodgerblue; 
+    font-size:20px;
+    font-weight:bold;
+    width: 400px;
+    height: 100px;
+    margin: auto;
+    
+}
+
+#send {
+
+    display: block;
+    width: fit-content; 
+    padding: 10px;
+    color:white;
+    background-color: dodgerblue;
+    font-size:15px;
+    border: 1px solid dodgerblue;
+    cursor:pointer;
+    font-weight:bold;
+    margin: auto;
+  
+}
+

@@ -1,0 +1,65 @@
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200&display=swap" rel="stylesheet">
+  
+  <title>Simple Chat App</title>
+<h1>Simple Chat App</h1>
+</head>
+
+<body>
+<pre id="messages"></pre> <!--creating a box for messages-->
+<input type="text" id="messageBox" placeholder="Type your message here"/> <br> <!--allowing user to input a message-->
+<button id="send" title="Send Message!">Send Message</button>
+</body>
+
+<script>
+  (function() { //immediately invoked function expression-runs as soon as it's defined
+    const sendBtn = document.querySelector('#send');
+    const messages = document.querySelector('#messages');
+    const messageBox = document.querySelector('#messageBox');
+
+    let ws; //creating empty expression,we need it later
+
+    function showMessage(message) { //creating a function we call when we pass it a message, it just goes in and uses the messages selector, adds the text and then we clear the sent message from the user's message box.
+      messages.textContent += `\n\n${message}`;
+      messages.scrollTop = messages.scrollHeight;
+      messageBox.value = '';
+    }
+
+    function init() {
+        //we check if there's a connection already for the user 
+        //if there is a connection, null the connection and then close it
+        //if the user doesn't have a connection, initialise a new connection to the server 
+      if (ws) {
+        ws.onerror = ws.onopen = ws.onclose = null;
+        ws.close();
+      }
+
+      const port = 6161;
+
+      ws = new WebSocket(`ws://localhost:${port}`);
+
+      ws.onopen = () => { //Once we have a connection to the server, we simply console.log a message that states we have successfully connected to the server.
+        console.log('Connection opened!');
+      }
+      ws.onmessage = ({ data }) => showMessage(data); //check for a message, if there is a message, pass it to showMessage
+      ws.onclose = function() { //if the connection closes, null that connectuon 
+        ws = null;
+      }
+    }
+
+    sendBtn.onclick = function() {
+      if (!ws) { //we check if there's currently not an active ws connection (we don't want to send a message if there's no ws connection)
+        showMessage("No WebSocket connection :(");
+        return ;
+      }
+
+      ws.send(messageBox.value); //if there is a ws connection, we fire the message to the server
+      showMessage(messageBox.value); //show the message in the message box
+    }
+
+    init();
+  })();
+</script>
